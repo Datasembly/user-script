@@ -16,6 +16,6 @@
         var pattern = /"upc":"([0-9]*)",/;
         var upc = pattern.exec(script.text)[1];
         var url = "https://app.datasembly.com/dashboard?banner=c624d14d-b312-4e13-a8cf-080171cb50f3&upc=" + upc;
-        $("nav[data-automation-id='breadcrumb']").append("<div>" + upc + ": <a href=" + url + ">link</a></div>");
+        $("nav[data-automation-id='breadcrumb']").append("<div>" + upc + ": <a target='_blank' href=" + url + ">link</a></div>");
     }
 })();
