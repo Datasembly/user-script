@@ -20,7 +20,7 @@
             var url = "https://app.datasembly.com/dashboard?banner=c624d14d-b312-4e13-a8cf-080171cb50f3&upc=" + upc;
             $("nav[data-automation-id='breadcrumb']").append("<div>" + upc + ": <a target='_blank' href=" + url + ">link</a></div>");
         }
-    } else if (/https:\/\/www.instacart.com\/store\/items\/.*/.test(window.location.href)) {
+    } else if (/https:\/\/www.instacart.com\/.*/.test(window.location.href)) {
         document.addEventListener("click", function(event) {
             debugger;
             var element = event.target;
