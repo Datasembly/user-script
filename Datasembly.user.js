@@ -22,7 +22,6 @@
         }
     } else if (/https:\/\/www.instacart.com\/.*/.test(window.location.href)) {
         document.addEventListener("click", function(event) {
-            debugger;
             var element = event.target;
             if (element.classList.contains("item-title")) {
                 var firstId = window.location.pathname.split("/").reverse()[0];
