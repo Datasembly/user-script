@@ -4,7 +4,8 @@
 // @version      0.1
 // @description  Help identify UPCs and product IDs
 // @author       Datsembly, Inc.
-// @match        *://*/*
+// @match        *://*.walmart.com/*
+// @match        *://*.instacart.com/*
 // @grant        none
 // @require      http://code.jquery.com/jquery-latest.js
 // ==/UserScript==
@@ -39,6 +40,6 @@
                     }
                 });
             }
-        })
+        });
     }
 })();
