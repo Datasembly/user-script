@@ -6,12 +6,27 @@
 // @author       Datsembly, Inc.
 // @match        *://*.walmart.com/*
 // @match        *://*.instacart.com/*
+// @match        *://*.kroger.com/*
 // @grant        none
 // @require      http://code.jquery.com/jquery-latest.js
 // ==/UserScript==
 
 (function() {
     'use strict';
+    
+    var withcd = function(upc) {
+        var even = 0;
+        var odd = 0;
+        for (var i = 0; i < upc.length; i++) {
+            if (i % 2 == 0) {
+                even = even + Number(upc[i])*3;   
+            } else {
+                odd = odd + Number(upc[i]);   
+            }
+        }
+        var cd = (10 - (even + odd) % 10) % 10;
+        return upc + "" + cd;
+    };
 
     if (/https:\/\/www.walmart.com\/ip\/.*/.test(window.location.href)) {
         var script = $("script").filter((i, s) => s.text.startsWith("window.__WML_REDUX_INITIAL_STATE__"))[0];
@@ -41,5 +56,10 @@
                 });
             }
         });
+    } else if (/https:\/\/www.kroger.com\/.*\/p\/.*/.test(window.location.href)) {
+        var upc = withcd($(".ProductDetails-upc").text().substr(-11));
+        var url = "https://app.datasembly.com/dashboard?banner=c475577f-1d89-47ab-b271-f7e90dae4eb4&upc=" + upc;
+
+        $(".ProductDetails-rightColumn").prepend("<div>" + upc + ": <a target='_blank' href=" + url + ">link</a></div>");
     }
 })();
