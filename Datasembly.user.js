@@ -6,7 +6,8 @@
 // @author       Datsembly, Inc.
 // @match        *://*.walmart.com/*
 // @match        *://*.instacart.com/*
-// @match        *://*.kroger.com/*
+// @match        *://*.kroger.com/*/p/*
+// @match        *://*.kroger.com/storecatalog/clicklistbeta/*
 // @grant        none
 // @require      http://code.jquery.com/jquery-latest.js
 // ==/UserScript==
@@ -59,7 +60,12 @@
     } else if (/https:\/\/www.kroger.com\/.*\/p\/.*/.test(window.location.href)) {
         var upc = withcd($(".ProductDetails-upc").text().substr(-11));
         var url = "https://app.datasembly.com/dashboard?banner=c475577f-1d89-47ab-b271-f7e90dae4eb4&upc=" + upc;
-
         $(".ProductDetails-rightColumn").prepend("<div>" + upc + ": <a target='_blank' href=" + url + ">link</a></div>");
-    }
+    } else if (/https:\/\/www.kroger.com\/storecatalog\/clicklistbeta\/\#\/productdetails\/.*/.test(window.location.href)) {
+        var upc = withcd(window.location.href.substr(-11));
+        var url = "https://app.datasembly.com/dashboard?banner=c475577f-1d89-47ab-b271-f7e90dae4eb4&upc=" + upc;
+        setTimeout(function() {
+                $(".namePartPriceContainer").prepend("<div>" + upc + ": <a target='_blank' href=" + url + ">link</a></div>");
+            }, 500);
+        }
 })();
