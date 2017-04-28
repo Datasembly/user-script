@@ -61,7 +61,10 @@
         let url = "https://app.datasembly.com/dashboard?banner=c475577f-1d89-47ab-b271-f7e90dae4eb4&upc=" + upc;
         $(".ProductDetails-rightColumn").prepend("<div>" + upc + ": <a target='_blank' href=" + url + ">link</a></div>");
     } else if (/https:\/\/www.kroger.com\/storecatalog\/clicklistbeta\/\#\/productdetails\/.*/.test(window.location.href)) {
-        let upc = withcd(window.location.href.substr(-11));
+        let href = window.location.href;
+        let queryIndex = href.indexOf('?');
+        let noQuery = queryIndex === -1 ? href : href.substr(0, queryIndex);
+        let upc = withcd(noQuery.substr(-11));
         let url = "https://app.datasembly.com/dashboard?banner=c475577f-1d89-47ab-b271-f7e90dae4eb4&upc=" + upc;
         setTimeout(function() {
                 $(".namePartPriceContainer").prepend("<div>" + upc + ": <a target='_blank' href=" + url + ">link</a></div>");
