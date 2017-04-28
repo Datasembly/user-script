@@ -10,6 +10,7 @@
 // @match        *://*.kroger.com/storecatalog/clicklistbeta/*
 // @grant        none
 // @require      http://code.jquery.com/jquery-latest.js
+// @updateURL    https://github.com/Datasembly/user-script/raw/master/Datasembly.user.js
 // ==/UserScript==
 
 (function() {
