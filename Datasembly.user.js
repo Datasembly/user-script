@@ -60,14 +60,20 @@
         let upc = withcd($(".ProductDetails-upc").text().substr(-11));
         let url = "https://app.datasembly.com/dashboard?banner=c475577f-1d89-47ab-b271-f7e90dae4eb4&upc=" + upc;
         $(".ProductDetails-rightColumn").prepend("<div>" + upc + ": <a target='_blank' href=" + url + ">link</a></div>");
-    } else if (/https:\/\/www.kroger.com\/storecatalog\/clicklistbeta\/\#\/productdetails\/.*/.test(window.location.href)) {
-        let href = window.location.href;
-        let queryIndex = href.indexOf('?');
-        let noQuery = queryIndex === -1 ? href : href.substr(0, queryIndex);
-        let upc = withcd(noQuery.substr(-11));
-        let url = "https://app.datasembly.com/dashboard?banner=c475577f-1d89-47ab-b271-f7e90dae4eb4&upc=" + upc;
-        setTimeout(function() {
+    } else if (/https:\/\/www.kroger.com\/storecatalog\/clicklistbeta\/.*/.test(window.location.href)) {
+        let checkAndAdd = function() {
+            let href = window.location.href;
+            let queryIndex = href.indexOf('?');
+            let noQuery = queryIndex === -1 ? href : href.substr(0, queryIndex);
+            let upc = withcd(noQuery.substr(-11));
+            let url = "https://app.datasembly.com/dashboard?banner=c475577f-1d89-47ab-b271-f7e90dae4eb4&upc=" + upc;
+            setTimeout(function() {
                 $(".namePartPriceContainer").prepend("<div>" + upc + ": <a target='_blank' href=" + url + ">link</a></div>");
             }, 500);
-        }
+        };
+        checkAndAdd();
+        $(window).on('hashchange', function(e){
+            checkAndAdd();
+        });
+    }
 })();
