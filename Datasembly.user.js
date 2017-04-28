@@ -14,18 +14,17 @@
 
 (function() {
     'use strict';
-    
-    var withcd = function(upc) {
-        var even = 0;
-        var odd = 0;
-        for (var i = 0; i < upc.length; i++) {
-            if (i % 2 == 0) {
-                even = even + Number(upc[i])*3;   
+    let withcd = function(upc) {
+        let even = 0;
+        let odd = 0;
+        for (let i = 0; i < upc.length; i++) {
+            if (i % 2 === 0) {
+                even = even + Number(upc[i])*3;
             } else {
-                odd = odd + Number(upc[i]);   
+                odd = odd + Number(upc[i]);
             }
         }
-        var cd = (10 - (even + odd) % 10) % 10;
+        let cd = (10 - (even + odd) % 10) % 10;
         return upc + "" + cd;
     };
 
@@ -39,7 +38,7 @@
         }
     } else if (/https:\/\/www.instacart.com\/.*/.test(window.location.href)) {
         document.addEventListener("click", function(event) {
-            var element = event.target;
+            let element = event.target;
             if (element.classList.contains("item-title")) {
                 var firstId = window.location.pathname.split("/").reverse()[0];
                 $(".ds-sku-tool").remove();
@@ -58,12 +57,12 @@
             }
         });
     } else if (/https:\/\/www.kroger.com\/.*\/p\/.*/.test(window.location.href)) {
-        var upc = withcd($(".ProductDetails-upc").text().substr(-11));
-        var url = "https://app.datasembly.com/dashboard?banner=c475577f-1d89-47ab-b271-f7e90dae4eb4&upc=" + upc;
+        let upc = withcd($(".ProductDetails-upc").text().substr(-11));
+        let url = "https://app.datasembly.com/dashboard?banner=c475577f-1d89-47ab-b271-f7e90dae4eb4&upc=" + upc;
         $(".ProductDetails-rightColumn").prepend("<div>" + upc + ": <a target='_blank' href=" + url + ">link</a></div>");
     } else if (/https:\/\/www.kroger.com\/storecatalog\/clicklistbeta\/\#\/productdetails\/.*/.test(window.location.href)) {
-        var upc = withcd(window.location.href.substr(-11));
-        var url = "https://app.datasembly.com/dashboard?banner=c475577f-1d89-47ab-b271-f7e90dae4eb4&upc=" + upc;
+        let upc = withcd(window.location.href.substr(-11));
+        let url = "https://app.datasembly.com/dashboard?banner=c475577f-1d89-47ab-b271-f7e90dae4eb4&upc=" + upc;
         setTimeout(function() {
                 $(".namePartPriceContainer").prepend("<div>" + upc + ": <a target='_blank' href=" + url + ">link</a></div>");
             }, 500);
