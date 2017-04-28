@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Datasembly UPC tools
 // @namespace    https://datasembly.com
-// @version      0.1.1
+// @version      0.1.2
 // @description  Help identify UPCs and product IDs
 // @author       Datsembly, Inc.
 // @match        *://*.walmart.com/*
