@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Datasembly UPC tools
 // @namespace    https://datasembly.com
-// @version      0.1.5
+// @version      0.1.6
 // @description  Help identify UPCs and product IDs
 // @author       Datsembly, Inc.
 // @match        *://*.walmart.com/*
@@ -10,6 +10,7 @@
 // @match        *://*.kroger.com/storecatalog/clicklistbeta/*
 // @match        *://*.meijer.com/product/*
 // @match        *://*.shoprite.com/store/*
+// @match        *://*.heb.com/product-detail/*
 // @grant        none
 // @require      http://code.jquery.com/jquery-latest.js
 // @updateURL    https://github.com/Datasembly/user-script/raw/master/Datasembly.user.js
@@ -105,5 +106,10 @@ this.$ = jQuery.noConflict(true);
        $(window).on('hashchange', function(e){
            checkAndAdd();
         });
+    } else if (/https:\/\/www.heb.com\/product-detail\/.*/.test(window.location.href)) {
+         let upcwithzero = "0" + $("#defaultChildSku").attr("value")
+         let upc = withcd(upcwithzero.substr(-11));
+         let url = "https://app.datasembly.com/dashboard?banner=218ca758-17de-49c4-932e-61486fe6c46d&upc=" + upc;
+         $(".first-block h1").after("<div>" + upc + ": <a target='_blank' href=" + url + ">link</a></div>");
     }
 })();
