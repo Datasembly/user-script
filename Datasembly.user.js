@@ -1,13 +1,14 @@
 // ==UserScript==
 // @name         Datasembly UPC tools
 // @namespace    https://datasembly.com
-// @version      0.1.2
+// @version      0.1.3
 // @description  Help identify UPCs and product IDs
 // @author       Datsembly, Inc.
 // @match        *://*.walmart.com/*
 // @match        *://*.instacart.com/*
 // @match        *://*.kroger.com/*/p/*
 // @match        *://*.kroger.com/storecatalog/clicklistbeta/*
+// @match        *://*.meijer.com/product/*
 // @grant        none
 // @require      http://code.jquery.com/jquery-latest.js
 // @updateURL    https://github.com/Datasembly/user-script/raw/master/Datasembly.user.js
@@ -76,5 +77,9 @@
         $(window).on('hashchange', function(e){
             checkAndAdd();
         });
+    } else if (/https:\/\/www.meijer.com\/product\/.*\/[0-9]*\.uts/.test(window.location.href)) {
+       let upc = withcd(window.location.pathname.split("/").reverse()[0].substr(0, 11));
+       let url = "https://app.datasembly.com/dashboard?banner=ed156cf2-cc4d-4017-868f-dd1dc76914e3&upc=" + upc;
+       $(".mjr-section-title-2").after("<div>" + upc + ": <a target='_blank' href=" + url + ">link</a></div>");
     }
 })();
