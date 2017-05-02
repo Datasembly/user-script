@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Datasembly UPC tools
 // @namespace    https://datasembly.com
-// @version      0.1.4
+// @version      0.1.5
 // @description  Help identify UPCs and product IDs
 // @author       Datsembly, Inc.
 // @match        *://*.walmart.com/*
@@ -81,7 +81,10 @@ this.$ = jQuery.noConflict(true);
             checkAndAdd();
         });
     } else if (/https:\/\/www.meijer.com\/product\/.*\/[0-9]*\.uts/.test(window.location.href)) {
-       let upc = withcd(window.location.pathname.split("/").reverse()[0].substr(0, 11));
+       let lastpart = window.location.pathname.split("/").reverse()[0];
+       let upcmightneedzero = lastpart.substr(0, lastpart.indexOf("."));
+       let upcwithzero = ("0" + upcmightneedzero).substr(-11);
+       let upc = withcd(upcwithzero);
        let url = "https://app.datasembly.com/dashboard?banner=ed156cf2-cc4d-4017-868f-dd1dc76914e3&upc=" + upc;
        $(".mjr-section-title-2").after("<div>" + upc + ": <a target='_blank' href=" + url + ">link</a></div>");
     } else if (/https:\/\/shop\.shoprite\.com\/.*\/product\/sku\/[0-9]*/.test(window.location.href)) {
