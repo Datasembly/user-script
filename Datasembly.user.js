@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Datasembly UPC tools
 // @namespace    https://datasembly.com
-// @version      0.1.3
+// @version      0.1.4
 // @description  Help identify UPCs and product IDs
 // @author       Datsembly, Inc.
 // @match        *://*.walmart.com/*
@@ -9,10 +9,13 @@
 // @match        *://*.kroger.com/*/p/*
 // @match        *://*.kroger.com/storecatalog/clicklistbeta/*
 // @match        *://*.meijer.com/product/*
+// @match        *://*.shoprite.com/store/*
 // @grant        none
 // @require      http://code.jquery.com/jquery-latest.js
 // @updateURL    https://github.com/Datasembly/user-script/raw/master/Datasembly.user.js
 // ==/UserScript==
+
+this.$ = jQuery.noConflict(true);
 
 (function() {
     'use strict';
@@ -81,5 +84,23 @@
        let upc = withcd(window.location.pathname.split("/").reverse()[0].substr(0, 11));
        let url = "https://app.datasembly.com/dashboard?banner=ed156cf2-cc4d-4017-868f-dd1dc76914e3&upc=" + upc;
        $(".mjr-section-title-2").after("<div>" + upc + ": <a target='_blank' href=" + url + ">link</a></div>");
+    } else if (/https:\/\/shop\.shoprite\.com\/.*\/product\/sku\/[0-9]*/.test(window.location.href)) {
+       let checkAndAdd = function() {
+           let upc = window.location.href.substr(-12);
+           let url = "https://app.datasembly.com/dashboard?banner=937be4a1-875c-4489-993f-b60ae9268c1a&upc=" + upc;
+
+           let added = false;
+           $(document).bind('DOMSubtreeModified', function() {
+               let info = $(".primaryInformation h4");
+               if (info.size() == 1 && !added && /^[0-9]+$/.test(upc)) {
+                   added = true;
+                   $(".primaryInformation h4").after("<div>" + upc + ": <a target='_blank' href=" + url + ">link</a></div>");
+               }
+           });
+       };
+       checkAndAdd();
+       $(window).on('hashchange', function(e){
+           checkAndAdd();
+        });
     }
 })();
