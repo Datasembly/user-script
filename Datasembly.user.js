@@ -11,6 +11,7 @@
 // @match        *://*.meijer.com/product/*
 // @match        *://*.shoprite.com/store/*
 // @match        *://*.heb.com/product-detail/*
+// @match        *://*.google.com/express/product/*
 // @grant        none
 // @require      http://code.jquery.com/jquery-latest.js
 // @updateURL    https://github.com/Datasembly/user-script/raw/master/Datasembly.user.js
@@ -111,5 +112,8 @@ this.$ = jQuery.noConflict(true);
          let upc = withcd(upcwithzero.substr(-11));
          let url = "https://app.datasembly.com/dashboard?banner=218ca758-17de-49c4-932e-61486fe6c46d&upc=" + upc;
          $(".first-block h1").after("<div>" + upc + ": <a target='_blank' href=" + url + ">link</a></div>");
+    } else if (/https:\/\/www.google.com\/express\/product\/.*/.test(window.location.href)) {
+         let sku = window.location.pathname.split("/").reverse()[0].split("_")[1];
+        $(".productTitle").after("<div class='ds-sku-tool'>Product ID: " + sku + "</div>");
     }
 })();
