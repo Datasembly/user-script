@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Datasembly UPC tools
 // @namespace    https://datasembly.com
-// @version      0.1.9
+// @version      0.1.10
 // @description  Help identify UPCs and product IDs
 // @author       Datsembly, Inc.
 // @match        *://*.walmart.com/*
@@ -47,7 +47,7 @@ this.$ = jQuery.noConflict(true);
         document.addEventListener("click", function(event) {
             let element = event.target;
             if (element.classList.contains("item-title")) {
-                var firstId = window.location.pathname.split("/").reverse()[0];
+                var firstId = window.location.pathname.split("/").reverse()[0].substring(5);
                 $(".ds-sku-tool").remove();
                 $(".item-title").append("<div class='ds-sku-tool'>Fetching product ID for: " + firstId + "</div>");
                 $.ajax ({
