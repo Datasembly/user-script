@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Datasembly UPC tools
 // @namespace    https://datasembly.com
-// @version      0.1.10
+// @version      0.1.11
 // @description  Help identify UPCs and product IDs
 // @author       Datsembly, Inc.
 // @match        *://*.walmart.com/*
@@ -12,6 +12,7 @@
 // @match        *://*.shoprite.com/store/*
 // @match        *://*.heb.com/product-detail/*
 // @match        *://*.google.com/express/product/*
+// @match        *://*.wegmans.com/products/*
 // @grant        none
 // @require      http://code.jquery.com/jquery-latest.js
 // @updateURL    https://github.com/Datasembly/user-script/raw/master/Datasembly.user.js
@@ -115,5 +116,11 @@ this.$ = jQuery.noConflict(true);
     } else if (/https:\/\/www.google.com\/express\/product\/.*/.test(window.location.href)) {
          let sku = window.location.pathname.split("/").reverse()[0].split("_")[1];
         $(".productTitle").after("<div class='ds-sku-tool'>Product ID: " + sku + "</div>");
+    } else if (/https:\/\/www.wegmans.com\/products\/.*/.test(window.location.href)) {
+         let upc = $("span[itemprop='gtin14']").text().substr(2);
+         if(upc !== "") {
+             let url = "http://ec2-54-210-20-248.compute-1.amazonaws.com:3000/dashboard?banner=9f735df5-6ac2-4964-beda-039d111869de&upc=" + upc;
+             $(".title").after("<div>" + upc + ": <a target='_blank' href=" + url + ">link</a></div>");
+         }
     }
 })();
