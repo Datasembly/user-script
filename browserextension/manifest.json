@@ -1,0 +1,28 @@
+{
+  "name": "Datasembly",
+  "description": "Datasembly chrome extension",
+  "version": "0.1",
+  "background": { "scripts": ["background.js"] },
+  "content_scripts": [{
+    "matches": ["*://*/*"],
+    "css": [],
+    "js": ["jquery.js", "content.js"]
+  }],
+  "icons": {
+    "16": "icon16.png",
+    "48": "icon48.png",
+    "96": "icon96.png",
+    "128": "icon128.png"
+  },
+  "browser_action": {
+    "default_icon": {
+      "16": "icon16.png",
+      "48": "icon48.png",
+      "96": "icon96.png",
+      "128": "icon128.png"
+    },
+    "default_title": "Open Datasembly in new tab"
+  },
+  "permissions": [],
+  "manifest_version": 2
+}

@@ -37,10 +37,9 @@ this.$ = jQuery.noConflict(true);
     };
 
     if (/https:\/\/www.walmart.com\/ip\/.*/.test(window.location.href)) {
-        var script = $("script").filter((i, s) => s.text.indexOf("window.__WML_REDUX_INITIAL_STATE__") !== -1)[0];
-        if (script) {
-            var pattern = /"upc":"([0-9]*)",/;
-            var upc = pattern.exec(script.text)[1];
+        var productId = $("meta[itemtype='http://schema.org/Product']").attr("content");
+        if (productId) {
+            var upc = ("00000" + productId).substr(-12);
             var url = "http://ec2-54-210-20-248.compute-1.amazonaws.com:3000/dashboard?banner=c624d14d-b312-4e13-a8cf-080171cb50f3&upc=" + upc;
             $("nav[data-automation-id='breadcrumb']").append("<div>" + upc + ": <a target='_blank' href=" + url + ">link</a></div>");
         }
