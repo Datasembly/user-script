@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Datasembly UPC tools
 // @namespace    https://datasembly.com
-// @version      0.1.11
+// @version      0.1.12
 // @description  Help identify UPCs and product IDs
 // @author       Datsembly, Inc.
 // @match        *://*.walmart.com/*
@@ -14,7 +14,7 @@
 // @match        *://*.google.com/express/product/*
 // @match        *://*.wegmans.com/products/*
 // @grant        none
-// @require      http://code.jquery.com/jquery-latest.js
+// @require      https://code.jquery.com/jquery-latest.js
 // @updateURL    https://github.com/Datasembly/user-script/raw/master/Datasembly.user.js
 // ==/UserScript==
 
