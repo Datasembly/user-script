@@ -37,7 +37,7 @@ this.$ = jQuery.noConflict(true);
     };
 
     if (/https:\/\/www.walmart.com\/ip\/.*/.test(window.location.href)) {
-        var productId = $("meta[itemtype='http://schema.org/Product']").attr("content");
+        var productId = $(".prod-ProductSecondaryInformation span[itemprop='gtin13'").attr("content");
         if (productId) {
             var upc = ("00000" + productId).substr(-12);
             var url = "http://ec2-54-210-20-248.compute-1.amazonaws.com:3000/dashboard?banner=c624d14d-b312-4e13-a8cf-080171cb50f3&upc=" + upc;
