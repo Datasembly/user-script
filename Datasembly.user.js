@@ -40,7 +40,7 @@ this.$ = jQuery.noConflict(true);
         var productId = $(".prod-ProductSecondaryInformation span[itemprop='gtin13'").attr("content");
         if (productId) {
             var upc = ("00000" + productId).substr(-12);
-            var url = "http://ec2-54-210-20-248.compute-1.amazonaws.com:3000/dashboard?banner=c624d14d-b312-4e13-a8cf-080171cb50f3&upc=" + upc;
+            var url = "http://staging.datasembly.com/dashboard?banner=c624d14d-b312-4e13-a8cf-080171cb50f3&upc=" + upc;
             $("nav[data-automation-id='breadcrumb']").append("<div>" + upc + ": <a target='_blank' href=" + url + ">link</a></div>");
         }
     } else if (/https:\/\/www.instacart.com\/.*/.test(window.location.href)) {
@@ -65,7 +65,7 @@ this.$ = jQuery.noConflict(true);
         });
     } else if (/https:\/\/www.kroger.com\/.*\/p\/.*/.test(window.location.href)) {
         let upc = withcd($(".ProductDetails-upc").text().substr(-11));
-        let url = "http://ec2-54-210-20-248.compute-1.amazonaws.com:3000/dashboard?banner=c475577f-1d89-47ab-b271-f7e90dae4eb4&upc=" + upc;
+        let url = "http://staging.datasembly.com/dashboard?banner=c475577f-1d89-47ab-b271-f7e90dae4eb4&upc=" + upc;
         $(".ProductDetails-rightColumn").prepend("<div>" + upc + ": <a target='_blank' href=" + url + ">link</a></div>");
     } else if (/https:\/\/www.kroger.com\/storecatalog\/clicklistbeta\/.*/.test(window.location.href)) {
         let checkAndAdd = function() {
@@ -73,7 +73,7 @@ this.$ = jQuery.noConflict(true);
             let queryIndex = href.indexOf('?');
             let noQuery = queryIndex === -1 ? href : href.substr(0, queryIndex);
             let upc = withcd(noQuery.substr(-11));
-            let url = "http://ec2-54-210-20-248.compute-1.amazonaws.com:3000/dashboard?banner=c475577f-1d89-47ab-b271-f7e90dae4eb4&upc=" + upc;
+            let url = "http://staging.datasembly.com/dashboard?banner=c475577f-1d89-47ab-b271-f7e90dae4eb4&upc=" + upc;
             setTimeout(function() {
                 $(".namePartPriceContainer").prepend("<div>" + upc + ": <a target='_blank' href=" + url + ">link</a></div>");
             }, 500);
@@ -87,12 +87,12 @@ this.$ = jQuery.noConflict(true);
        let upcmightneedzero = lastpart.substr(0, lastpart.indexOf("."));
        let upcwithzero = ("0" + upcmightneedzero).substr(-11);
        let upc = withcd(upcwithzero);
-       let url = "http://ec2-54-210-20-248.compute-1.amazonaws.com:3000/dashboard?banner=ed156cf2-cc4d-4017-868f-dd1dc76914e3&upc=" + upc;
+       let url = "http://staging.datasembly.com/dashboard?banner=ed156cf2-cc4d-4017-868f-dd1dc76914e3&upc=" + upc;
        $(".mjr-section-title-2").after("<div>" + upc + ": <a target='_blank' href=" + url + ">link</a></div>");
     } else if (/https:\/\/shop\.shoprite\.com\/.*\/product\/sku\/[0-9]*/.test(window.location.href)) {
        let checkAndAdd = function() {
            let upc = window.location.href.substr(-12);
-           let url = "http://ec2-54-210-20-248.compute-1.amazonaws.com:3000/dashboard?banner=937be4a1-875c-4489-993f-b60ae9268c1a&upc=" + upc;
+           let url = "http://staging.datasembly.com/dashboard?banner=937be4a1-875c-4489-993f-b60ae9268c1a&upc=" + upc;
 
            let added = false;
            $(document).bind('DOMSubtreeModified', function() {
@@ -110,7 +110,7 @@ this.$ = jQuery.noConflict(true);
     } else if (/https:\/\/www.heb.com\/product-detail\/.*/.test(window.location.href)) {
          let upcwithzero = "0" + $("#defaultChildSku").attr("value")
          let upc = withcd(upcwithzero.substr(-11));
-         let url = "http://ec2-54-210-20-248.compute-1.amazonaws.com:3000/dashboard?banner=218ca758-17de-49c4-932e-61486fe6c46d&upc=" + upc;
+         let url = "http://staging.datasembly.com/dashboard?banner=218ca758-17de-49c4-932e-61486fe6c46d&upc=" + upc;
          $(".first-block h1").after("<div>" + upc + ": <a target='_blank' href=" + url + ">link</a></div>");
     } else if (/https:\/\/www.google.com\/express\/product\/.*/.test(window.location.href)) {
          let sku = window.location.pathname.split("/").reverse()[0].split("_")[1];
@@ -118,7 +118,7 @@ this.$ = jQuery.noConflict(true);
     } else if (/https:\/\/www.wegmans.com\/products\/.*/.test(window.location.href)) {
          let upc = $("span[itemprop='gtin14']").text().substr(2);
          if(upc !== "") {
-             let url = "http://ec2-54-210-20-248.compute-1.amazonaws.com:3000/dashboard?banner=9f735df5-6ac2-4964-beda-039d111869de&upc=" + upc;
+             let url = "http://staging.datasembly.com/dashboard?banner=9f735df5-6ac2-4964-beda-039d111869de&upc=" + upc;
              $(".title").after("<div>" + upc + ": <a target='_blank' href=" + url + ">link</a></div>");
          }
     }
