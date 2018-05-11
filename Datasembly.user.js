@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Datasembly UPC tools
 // @namespace    https://datasembly.com
-// @version      0.1.12
+// @version      0.1.13
 // @description  Help identify UPCs and product IDs
 // @author       Datsembly, Inc.
 // @match        *://*.walmart.com/*
@@ -37,7 +37,7 @@ this.$ = jQuery.noConflict(true);
     };
 
     if (/https:\/\/www.walmart.com\/ip\/.*/.test(window.location.href)) {
-        var productId = $(".prod-ProductSecondaryInformation span[itemprop='gtin13'").attr("content");
+        var productId = $(".prod-productsecondaryinformation span[itemprop='gtin13']").attr("content");
         if (productId) {
             var upc = ("00000" + productId).substr(-12);
             var url = "http://staging.datasembly.com/dashboard?banner=c624d14d-b312-4e13-a8cf-080171cb50f3&upc=" + upc;
