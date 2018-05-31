@@ -1,12 +1,12 @@
 // ==UserScript==
 // @name         Datasembly UPC tools
 // @namespace    https://datasembly.com
-// @version      0.1.14
+// @version      0.1.15
 // @description  Help identify UPCs and product IDs
 // @author       Datsembly, Inc.
 // @match        *://*.walmart.com/*
 // @match        *://*.instacart.com/*
-// @match        *://*.kroger.com/*/p/*
+// @match        *://*.kroger.com*p/*
 // @match        *://*.kroger.com/storecatalog/clicklistbeta/*
 // @match        *://*.meijer.com/product/*
 // @match        *://*.shoprite.com/store/*
@@ -63,10 +63,18 @@ this.$ = jQuery.noConflict(true);
                 });
             }
         });
-    } else if (/https:\/\/www.kroger.com\/.*\/p\/.*/.test(window.location.href)) {
-        let upc = withcd($(".ProductDetails-upc").text().substr(-11));
-        let url = "http://staging.datasembly.com/dashboard?banner=c475577f-1d89-47ab-b271-f7e90dae4eb4&upc=" + upc;
-        $(".ProductDetails-rightColumn").prepend("<div>" + upc + ": <a target='_blank' href=" + url + ">link</a></div>");
+    } else if (/https:\/\/www.kroger.com.*\/p\/.*/.test(window.location.href)) {
+        let checkAndAdd = function() {
+            let upc = withcd($(".ProductDetails-upc").text().substr(-11));
+            let currentUpc = $(".ProductDetails-rightColumn .datasembly-upc-link").attr("upc")
+            if (upc !== "0" && upc != currentUpc) {
+                let url = "http://staging.datasembly.com/dashboard?banner=c475577f-1d89-47ab-b271-f7e90dae4eb4&upc=" + upc;
+                $(".ProductDetails-rightColumn").prepend("<div class='datasembly-upc-link' upc=" + upc + ">" + upc + ": <a target='_blank' href=" + url + ">link</a></div>");
+            }
+        }
+        $(".Page-content").on("DOMNodeInserted", function(e){
+           checkAndAdd();
+        });
     } else if (/https:\/\/www.kroger.com\/storecatalog\/clicklistbeta\/.*/.test(window.location.href)) {
         let checkAndAdd = function() {
             let href = window.location.href;
