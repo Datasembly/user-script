@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Datasembly UPC tools
 // @namespace    https://datasembly.com
-// @version      0.1.15
+// @version      0.1.16
 // @description  Help identify UPCs and product IDs
 // @author       Datsembly, Inc.
 // @match        *://*.walmart.com/*
@@ -104,10 +104,10 @@ this.$ = jQuery.noConflict(true);
 
            let added = false;
            $(document).bind('DOMSubtreeModified', function() {
-               let info = $(".primaryInformation h4");
+               let info = $(".primaryInformation text");
                if (info.size() == 1 && !added && /^[0-9]+$/.test(upc)) {
                    added = true;
-                   $(".primaryInformation h4").after("<div>" + upc + ": <a target='_blank' href=" + url + ">link</a></div>");
+                   info.after("<div>" + upc + ": <a target='_blank' href=" + url + ">link</a></div>");
                }
            });
        };
