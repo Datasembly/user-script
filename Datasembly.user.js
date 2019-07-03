@@ -1,14 +1,14 @@
 // ==UserScript==
 // @name         Datasembly UPC tools
 // @namespace    https://datasembly.com
-// @version      0.1.17
+// @version      0.1.18
 // @description  Help identify UPCs and product IDs
 // @author       Datsembly, Inc.
 // @match        *://*.walmart.com/*
 // @match        *://*.instacart.com/*
 // @match        *://*.kroger.com*p/*
 // @match        *://*.kroger.com/storecatalog/clicklistbeta/*
-// @match        *://*.meijer.com/product/*
+// @match        *://*.meijer.com/*
 // @match        *://*.shoprite.com/store/*
 // @match        *://*.heb.com/product-detail/*
 // @match        *://*.google.com/express/product/*
@@ -96,13 +96,12 @@ this.$ = jQuery.noConflict(true);
         $(window).on('hashchange', function(e){
             checkAndAdd();
         });
-    } else if (/https:\/\/www.meijer.com\/product\/.*\/[0-9]*\.uts/.test(window.location.href)) {
-       let lastpart = window.location.pathname.split("/").reverse()[0];
-       let upcmightneedzero = lastpart.substr(0, lastpart.indexOf("."));
+    } else if (/https:\/\/www.meijer.com\/shop\/.*\/[0-9]*/.test(window.location.href)) {
+       let upcmightneedzero = window.location.pathname.split("/").reverse()[0];
        let upcwithzero = ("0" + upcmightneedzero).substr(-11);
        let upc = withcd(upcwithzero);
        let url = "http://staging.datasembly.com/dashboard?banner=ed156cf2-cc4d-4017-868f-dd1dc76914e3&upc=" + upc;
-       $(".mjr-section-title-2").after("<div>" + upc + ": <a target='_blank' href=" + url + ">link</a></div>");
+       $("h1.desktop-product-name").after("<div>" + upc + ": <a target='_blank' href=" + url + ">link</a></div>");
     } else if (/https:\/\/shop\.shoprite\.com\/.*\/product\/sku\/[0-9]*/.test(window.location.href)) {
        let checkAndAdd = function() {
            let upc = window.location.href.substr(-12);
