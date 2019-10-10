@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Datasembly UPC tools
 // @namespace    https://datasembly.com
-// @version      0.1.18
+// @version      0.1.19
 // @description  Help identify UPCs and product IDs
 // @author       Datsembly, Inc.
 // @match        *://*.walmart.com/*
@@ -38,11 +38,11 @@ this.$ = jQuery.noConflict(true);
 
     if (/https:\/\/www.walmart.com\/ip\/.*/.test(window.location.href)) {
         let addLink = function() {
-            let productId = $(".prod-productsecondaryinformation span[itemprop='gtin13']").attr("content");
+            let productId = JSON.parse($("script#item").text())["item"].product.buyBox.products[0].upc;
             if (productId) {
                 let upc = ("00000" + productId).substr(-12);
                 let url = "http://staging.datasembly.com/dashboard?banner=c624d14d-b312-4e13-a8cf-080171cb50f3&upc=" + upc;
-                $("nav[data-automation-id='breadcrumb']").append("<div>" + upc + ": <a target='_blank' href=" + url + ">link</a></div>");
+                $("ol.breadcrumb-list").append("<div>" + upc + ": <a target='_blank' href=" + url + ">link</a></div>");
             }
         }
         addLink();
