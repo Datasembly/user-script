@@ -38,11 +38,11 @@ this.$ = jQuery.noConflict(true);
 
     if (/https:\/\/www.walmart.com\/ip\/.*/.test(window.location.href)) {
         let addLink = function() {
-            let productId = JSON.parse($("script#item").text())["item"].product.buyBox.products[0].upc;
+            let productId = JSON.parse($("script#__NEXT_DATA__").text()).props.pageProps.initialData.data.product.upc
             if (productId) {
                 let upc = ("00000" + productId).substr(-12);
                 let url = "https://staging.datasembly.com/productpricingdrilldown?bannerId=c624d14d-b312-4e13-a8cf-080171cb50f3&upc=" + upc;
-                $("ol.breadcrumb-list").append("<div>" + upc + ": <a target='_blank' href=" + url + ">link</a></div>");
+                $("ol.w_x").append("<div>" + upc + ": <a target='_blank' href=" + url + ">link</a></div>");
             }
         }
         addLink();
