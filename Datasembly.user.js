@@ -41,13 +41,13 @@ this.$ = jQuery.noConflict(true);
             let productId = JSON.parse($("script#__NEXT_DATA__").text()).props.pageProps.initialData.data.product.upc
             if (productId) {
                 let upc = ("00000" + productId).substr(-12);
-                let url = "https://staging.datasembly.com/productpricingdrilldown?bannerId=c624d14d-b312-4e13-a8cf-080171cb50f3&upc=" + upc;
-                $("ol.w_x").append("<div>" + upc + ": <a target='_blank' href=" + url + ">link</a></div>");
+                let url = "http://staging.datasembly.com/dashboard?banner=c624d14d-b312-4e13-a8cf-080171cb50f3&upc=" + upc;
+                $(".w_4HBV").prepend("<div class='datasembly-upc-link' upc=" + upc + ">" + upc + ": <a target='_blank' href=" + url + ">link</a></div>");
             }
         }
         addLink();
-        $(document).on("click", ".variant-options-container", function(e) {
-            addLink();
+        $(".flex flex-column min-vh-100 shadow-2").on("DOMNodeInserted", function(e){
+           addLink();
         });
     } else if (/https:\/\/www.instacart.com\/.*/.test(window.location.href)) {
         document.addEventListener("click", function(event) {
