@@ -5,14 +5,15 @@
 // @description  Help identify UPCs and product IDs
 // @author       Datsembly, Inc.
 // @match        *://*.walmart.com/*
-// @match        *://*.instacart.com/*
+// @match        *://*.instacart.com/* //will not be able to right now
 // @match        *://*.kroger.com*p/*
 // @match        *://*.kroger.com/storecatalog/clicklistbeta/*
-// @match        *://*.meijer.com/*
-// @match        *://*.shoprite.com/store/*
+// @match        *://*.shoprite.com/*
 // @match        *://*.heb.com/product-detail/*
-// @match        *://*.google.com/express/product/*
-// @match        *://*.wegmans.com/products/*
+// @match        *://*.google.com/express/product/* not tested
+// @match        *://*.albertsons.com/*
+// @match        *://*.target.com/p/*
+// @match        *://*.wholefoodsmarket.com/product*
 // @grant        none
 // @require      https://code.jquery.com/jquery-latest.js
 // @updateURL    https://github.com/Datasembly/user-script/raw/master/Datasembly.user.js
@@ -41,13 +42,13 @@ this.$ = jQuery.noConflict(true);
             let productId = JSON.parse($("script#__NEXT_DATA__").text()).props.pageProps.initialData.data.product.upc
             if (productId) {
                 let upc = ("00000" + productId).substr(-12);
-                let url = "https://staging.datasembly.com/productpricingdrilldown?bannerId=c624d14d-b312-4e13-a8cf-080171cb50f3&upc=" + upc;
-                $("ol.w_x").append("<div>" + upc + ": <a target='_blank' href=" + url + ">link</a></div>");
+                let url = "http://staging.datasembly.com/dashboard?banner=c624d14d-b312-4e13-a8cf-080171cb50f3&upc=" + upc;
+                $(".w_4HBV").prepend("<div class='datasembly-upc-link' upc=" + upc + ">" + upc + ": <a target='_blank' href=" + url + ">link</a></div>");
             }
         }
         addLink();
-        $(document).on("click", ".variant-options-container", function(e) {
-            addLink();
+        $(".flex flex-column min-vh-100 shadow-2").on("DOMNodeInserted", function(e){
+           addLink();
         });
     } else if (/https:\/\/www.instacart.com\/.*/.test(window.location.href)) {
         document.addEventListener("click", function(event) {
@@ -96,43 +97,60 @@ this.$ = jQuery.noConflict(true);
         $(window).on('hashchange', function(e){
             checkAndAdd();
         });
-    } else if (/https:\/\/www.meijer.com\/shop\/.*\/[0-9]*/.test(window.location.href)) {
-        let upcmightneedzero = window.location.pathname.split("/").reverse()[0];
-        let upcwithzero = ("0" + upcmightneedzero).substr(-11);
-        let upc = withcd(upcwithzero);
-        let url = "https://staging.datasembly.com/productpricingdrilldown?bannerId=ed156cf2-cc4d-4017-868f-dd1dc76914e3&upc=" + upc;
-        $("h1.desktop-product-name").after("<div>" + upc + ": <a target='_blank' href=" + url + ">link</a></div>");
-    } else if (/https:\/\/shop\.shoprite\.com\/.*\/product\/sku\/[0-9]*/.test(window.location.href)) {
-        let checkAndAdd = function() {
+    } else if (/https:\/\/www.shoprite\.com\/.*\/product\/[0-9]*/.test(window.location.href)) {
+        let addLink = function() {
             let upc = window.location.href.substr(-12);
-            let url = "https://staging.datasembly.com/productpricingdrilldown?bannerId=937be4a1-875c-4489-993f-b60ae9268c1a&upc=" + upc;
-
-            let added = false;
-            $(document).bind('DOMSubtreeModified', function() {
-                let info = $(".primaryInformation text");
-                if (info.size() == 1 && !added && /^[0-9]+$/.test(upc)) {
-                    added = true;
-                    info.after("<div>" + upc + ": <a target='_blank' href=" + url + ">link</a></div>");
-                }
-            });
-        };
-        checkAndAdd();
-        $(window).on('hashchange', function(e){
-            checkAndAdd();
-        });
+            let check_url = withcd($(".datasembly-upc-link").text().substr(-11));
+            if (upc) {
+                let url = "https://staging.datasembly.com/productpricingdrilldown?bannerId=937be4a1-875c-4489-993f-b60ae9268c1a&upc=" + upc;
+                $(".PdpInfoTitle--1qi97uk").prepend("<div class='datasembly-upc-link' upc=" + upc + ">" + upc + ": <a target='_blank' href=" + url + ">link</a></div>");
+            }
+        }
+        addLink();
     } else if (/https:\/\/www.heb.com\/product-detail\/.*/.test(window.location.href)) {
-        let upcwithzero = "0" + $("#defaultChildSku").attr("value")
-        let upc = withcd(upcwithzero.substr(-11));
-        let url = "https://staging.datasembly.com/productpricingdrilldown?bannerId=218ca758-17de-49c4-932e-61486fe6c46d&upc=" + upc;
-        $(".first-block h1").after("<div>" + upc + ": <a target='_blank' href=" + url + ">link</a></div>");
+        let text_block_with_string = $(":contains('twelveDigitUPC')").text();
+        let upc_string = text_block_with_string.toString();
+        let position = upc_string.search("twelveDigitUPC");
+        let upc_a = upc_string.substr(position + 19, 12);
+        let url = "https://staging.datasembly.com/productpricingdrilldown?bannerId=218ca758-17de-49c4-932e-61486fe6c46d&upc=" + upc_a;
+        $(".sc-1hc0hyf-4").after("<div>" + upc_a + ": <a target='_blank' href=" + url + ">link</a></div>");
     } else if (/https:\/\/www.google.com\/express\/product\/.*/.test(window.location.href)) {
         let sku = window.location.pathname.split("/").reverse()[0].split("_")[1];
         $(".productTitle").after("<div class='ds-sku-tool'>Product ID: " + sku + "</div>");
-    } else if (/https:\/\/www.wegmans.com\/products\/.*/.test(window.location.href)) {
-        let upc = $("span[itemprop='gtin14']").text().substr(2);
-        if(upc !== "") {
-            let url = "https://staging.datasembly.com/productpricingdrilldown?bannerId=9f735df5-6ac2-4964-beda-039d111869de&upc=" + upc;
-            $(".title").after("<div>" + upc + ": <a target='_blank' href=" + url + ">link</a></div>");
+    } else if (/https:\/\/www.albertsons.com\/.*\/product-detail*/.test(window.location.href)) {
+        let text_block_with_string = $(":contains('gtin13')").text();
+        let upc_string = text_block_with_string.toString();
+        let position = upc_string.search("gtin13");
+        let upc_a = upc_string.substr(position + 12, 11);
+        let upc_cd = withcd(upc_a);
+        if(upc_cd){
+            let url = "https://staging.datasembly.com/productpricingdrilldown?bannerId=6999d912-9fd5-4242-b96a-75eb8c3d7c22&upc=" + upc_cd;
+            $(".product-info").after("<div>" + upc_cd + ": <a target='_blank' href=" + url + ">link</a></div>");
+        }
+    } else if (/https:\/\/www.target.com\/p*/.test(window.location.href)) {
+        let checkAndAdd = function() {
+            let text_block_with_string = $(":contains('UPC')").text();
+            let upc_string = text_block_with_string.toString();
+            let position = upc_string.search("UPC");
+            let position_chk = upc_string.search("Datasembly link");
+            let upc_a = upc_string.substr(position + 5, 12);
+            if(upc_a && position_chk < 0){
+                let url = "https://staging.datasembly.com/productpricingdrilldown?bannerId=c206ce60-1390-4cde-a454-e88104c0ac86&upc=" + upc_a;
+                $(".h-padding-h-default").prepend("<div>" + upc_a + ": <a target='_blank' href=" + url + ">Datasembly link</a></div>");
+            }
+        }
+        checkAndAdd();
+        $(".__next").on("hashchange", function(e){
+            checkAndAdd();
+        });
+    } else if (/https:\/\/www.wholefoodsmarket.com\/product*/.test(window.location.href)) {
+        let text_block_with_string = $(":contains('assets.wholefoodsmarket.com/PIE/product')").text();
+        let upc_string = text_block_with_string.toString();
+        let position = upc_string.search("glamor-front");
+        let upc_a = upc_string.substr(position - 13, 12);
+        if(upc_a){
+            let url = "https://staging.datasembly.com/productpricingdrilldown?bannerId=6d5f2ac3-3009-42f6-a4ce-066f056caf0b&upc=" + upc_a;
+            $(".w-cms--font-headline__serif").after("<div>" + upc_a + ": <a target='_blank' href=" + url + ">Datasembly link</a></div>");
         }
     }
 })();
