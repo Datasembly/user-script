@@ -144,13 +144,16 @@ this.$ = jQuery.noConflict(true);
             checkAndAdd();
         });
     } else if (/https:\/\/www.wholefoodsmarket.com\/product*/.test(window.location.href)) {
-        let text_block_with_string = $(":contains('assets.wholefoodsmarket.com/PIE/product')").text();
-        let upc_string = text_block_with_string.toString();
-        let position = upc_string.search("glamor-front");
-        let upc_a = upc_string.substr(position - 13, 12);
-        if(upc_a){
-            let url = "https://staging.datasembly.com/productpricingdrilldown?bannerId=6d5f2ac3-3009-42f6-a4ce-066f056caf0b&upc=" + upc_a;
-            $(".w-cms--font-headline__serif").after("<div>" + upc_a + ": <a target='_blank' href=" + url + ">Datasembly link</a></div>");
-        }
+      let text_block_with_string = $(":contains('assets.wholefoodsmarket.com/PIE/product')").text();
+      let upc_string = text_block_with_string.toString();
+      let position = upc_string.search("glamor-front");
+      if(position > 0){
+          let upc_a = upc_string.substr(position - 13, 12);
+          let url = "https://staging.datasembly.com/productpricingdrilldown?bannerId=6d5f2ac3-3009-42f6-a4ce-066f056caf0b&upc=" + upc_a;
+           $(".w-cms--font-headline__serif").after("<div>" + upc_a + ": <a target='_blank' href=" + url + ">Datasembly link</a></div>");
+      } else {
+          let url = "https://staging.datasembly.com/productpricingdrilldown?bannerId=6d5f2ac3-3009-42f6-a4ce-066f056caf0b;"
+          $(".w-cms--font-headline__serif").after("<div>" + 'No UPC Found' + "</div>");
+      }
     }
 })();
