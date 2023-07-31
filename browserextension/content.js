@@ -42,7 +42,7 @@ this.$ = jQuery.noConflict(true);
             let productId = JSON.parse($("script#__NEXT_DATA__").text()).props.pageProps.initialData.data.product.upc
             if (productId) {
                 let upc = ("00000" + productId).substr(-12);
-                let url = "http://staging.datasembly.com/dashboard?banner=c624d14d-b312-4e13-a8cf-080171cb50f3&upc=" + upc;
+                let url = "https://staging.datasembly.com/productpricingdrilldown?bannerId=c624d14d-b312-4e13-a8cf-080171cb50f3&upc=" + upc;
                 $(".w_4HBV").prepend("<div class='datasembly-upc-link' upc=" + upc + ">" + upc + ": <a target='_blank' href=" + url + ">link</a></div>");
             }
         }
